@@ -29,7 +29,7 @@
       output = {};
       for(var key in obj) {
         if(Object.prototype.hasOwnProperty.call(obj, key)) {
-          output[convert(key, options)] = _processKeys(convert, obj[key], options, path.concat(key));
+          output[convert(key, options, path)] = _processKeys(convert, obj[key], options, path.concat(key));
         }
       }
     }
