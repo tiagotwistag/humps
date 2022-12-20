@@ -10,7 +10,7 @@
 
 ;(function(global) {
 
-  var _processKeys = function(convert, obj, options) {
+  var _processKeys = function(convert, obj, options, path = []) {
     if(!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj) || _isFunction(obj)) {
       return obj;
     }
@@ -22,14 +22,14 @@
     if(_isArray(obj)) {
       output = [];
       for(l=obj.length; i<l; i++) {
-        output.push(_processKeys(convert, obj[i], options));
+        output.push(_processKeys(convert, obj[i], options, path));
       }
     }
     else {
       output = {};
       for(var key in obj) {
         if(Object.prototype.hasOwnProperty.call(obj, key)) {
-          output[convert(key, options)] = _processKeys(convert, obj[key], options);
+          output[convert(key, options)] = _processKeys(convert, obj[key], options, path.concat(key));
         }
       }
     }
@@ -106,8 +106,8 @@
       return convert;
     }
 
-    return function(string, options) {
-      return callback(string, convert, options);
+    return function(string, options, path) {
+      return callback(string, convert, options, path);
     }
   };
 
